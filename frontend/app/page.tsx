@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import {
   Maximize,
   Sun,
@@ -36,6 +37,7 @@ const quickActionsRow2 = [
 
 export default function Home() {
   const { user, loading, logout, showAuthModal, setShowAuthModal } = useAuth()
+  const [input, setInput] = useState('')
 
   const requireAuth = (action: () => void) => {
     if (!user) { setShowAuthModal(true); return }
@@ -97,9 +99,14 @@ export default function Home() {
         </div>
 
         <div className="mx-auto mt-10 w-[92%] max-w-[700px] rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(12,12,18,0.85)] p-5 shadow-[0_8px_40px_rgba(0,0,0,0.5)] backdrop-blur-md sm:mt-12">
-          <div className="min-h-[3rem]">
-            <p className="text-[15px] text-[#6b7280]">Type your request...</p>
-          </div>
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend() } }}
+            placeholder="Type your request..."
+            rows={2}
+            className="w-full resize-none bg-transparent text-[15px] text-white placeholder-[#6b7280] outline-none"
+          />
           <div className="mt-4 flex items-center justify-between">
             <button aria-label="Attach file" className="text-[#9ca3af] transition-colors duration-150 hover:text-gray-300">
               <Paperclip size={18} />
