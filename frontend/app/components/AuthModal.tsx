@@ -15,6 +15,8 @@ export default function AuthModal() {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => { inputRef.current?.focus() }, [mode])
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
     setBusy(true)
