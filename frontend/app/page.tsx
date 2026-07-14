@@ -1,16 +1,16 @@
 'use client'
 
 import {
-  Maximize2,
+  Maximize,
   Sun,
-  RefreshCw,
+  RotateCw,
   Paperclip,
   ArrowUp,
   Code,
   Rocket,
   Layers,
   Palette,
-  UserCircle,
+  CircleUserRound,
   Monitor,
   FilePlus,
   Image,
@@ -21,7 +21,7 @@ const quickActionsRow1 = [
   { icon: Rocket, label: 'Launch App' },
   { icon: Layers, label: 'UI Components' },
   { icon: Palette, label: 'Theme Ideas' },
-  { icon: UserCircle, label: 'User Dashboard' },
+  { icon: CircleUserRound, label: 'User Dashboard' },
 ]
 
 const quickActionsRow2 = [
@@ -32,68 +32,71 @@ const quickActionsRow2 = [
 
 export default function Home() {
   return (
-    <main className="relative flex min-h-screen flex-col items-center overflow-hidden bg-[#050505] px-4 sm:px-6">
+    <main className="relative flex min-h-screen flex-col items-center overflow-hidden bg-[#050508]">
       <div
-        className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2"
+        className="pointer-events-none absolute left-1/2 -translate-x-1/2"
         style={{
-          width: '1400px',
-          height: '70%',
+          bottom: '-40%',
+          width: '140vw',
+          height: '90vh',
+          opacity: 0.9,
+          borderRadius: '50%',
           background:
-            'radial-gradient(ellipse 100% 70% at 50% 100%, rgba(124,58,237,0.6) 0%, rgba(99,102,241,0.4) 30%, rgba(79,70,229,0.2) 55%, transparent 80%)',
-          filter: 'blur(80px)',
-          transform: 'translateX(-50%)',
+            'radial-gradient(circle, #8b7cf6 0%, #6d4fe0 25%, #4c3aa8 45%, #1a1040 65%, transparent 75%)',
+          filter: 'blur(60px)',
+          opacity: 0.9,
         }}
       />
 
-      <div className="relative z-10 flex w-full max-w-5xl flex-col items-center px-4 pt-8">
-        <div className="flex w-full items-start">
-          <div className="flex items-center gap-2 rounded-lg border border-white/10 bg-[#111827] px-2 py-2">
-            <button className="rounded-md p-1.5 text-gray-400 transition-colors hover:bg-white/10 hover:text-white" aria-label="Toggle fullscreen">
-              <Maximize2 size={17} />
-            </button>
-            <button className="rounded-md p-1.5 text-gray-400 transition-colors hover:bg-white/10 hover:text-white" aria-label="Toggle theme">
-              <Sun size={17} />
-            </button>
-            <button className="rounded-md p-1.5 text-gray-400 transition-colors hover:bg-white/10 hover:text-white" aria-label="Refresh">
-              <RefreshCw size={17} />
-            </button>
-          </div>
+      <div className="fixed left-6 top-6 z-20">
+        <div className="flex items-center gap-1 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#0d0d12] p-1">
+          <button aria-label="Maximize" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors hover:bg-white/5">
+            <Maximize size={16} />
+          </button>
+          <button aria-label="Toggle theme" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors hover:bg-white/5">
+            <Sun size={16} />
+          </button>
+          <button aria-label="Refresh" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors hover:bg-white/5">
+            <RotateCw size={16} />
+          </button>
         </div>
+      </div>
 
-        <div className="mt-28 flex flex-col items-center">
-          <h1 className="text-5xl font-bold tracking-tight text-white">
-            Ruixen AI
+      <div className="relative z-10 flex w-full flex-col items-center justify-center px-4" style={{ minHeight: '100vh' }}>
+        <div className="flex flex-col items-center" style={{ marginTop: '-5vh' }}>
+          <h1 className="text-center text-5xl font-extrabold tracking-tight text-white md:text-6xl">
+            Xora AI
           </h1>
-          <p className="mt-3 text-base text-gray-400">
+          <p className="mt-3 text-center text-base font-normal text-gray-400">
             Build something amazing — just start typing below.
           </p>
         </div>
 
-        <div className="mt-10 w-full max-w-[700px] rounded-2xl border border-white/10 bg-[#0f0f14] p-5 shadow-xl">
-          <div className="min-h-[60px]">
-            <p className="text-sm text-gray-500">Type your request...</p>
+        <div className="mx-auto mt-12 w-[92%] max-w-[700px] rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(12,12,18,0.85)] p-5 shadow-[0_8px_40px_rgba(0,0,0,0.5)] backdrop-blur-md">
+          <div className="min-h-[3rem]">
+            <p className="text-[15px] text-[#6b7280]">Type your request...</p>
           </div>
-          <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
-            <button className="rounded-md p-1.5 text-gray-500 transition-colors hover:text-gray-300">
+          <div className="mt-4 flex items-center justify-between">
+            <button className="text-[#9ca3af] transition-colors hover:text-gray-300">
               <Paperclip size={18} />
             </button>
-            <button className="flex items-center justify-center rounded-lg bg-[#1c1c24] p-2.5 text-white transition-colors hover:bg-[#2a2a35]">
-              <ArrowUp size={18} />
+            <button className="flex h-9 w-9 items-center justify-center rounded-lg border border-[rgba(255,255,255,0.1)] bg-[#1c1c24] text-white transition-colors hover:bg-[#2a2a35]">
+              <ArrowUp size={16} />
             </button>
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col items-center gap-3">
+        <div className="mt-5 flex flex-col items-center gap-3">
           <div className="flex flex-wrap justify-center gap-3">
             {quickActionsRow1.map((action) => {
               const Icon = action.icon
               return (
                 <button
                   key={action.label}
-                  className="flex items-center gap-2 rounded-full border border-white/10 bg-[#0f0f14] px-4 py-2 text-sm transition-colors hover:bg-[#1a1a22]"
+                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.1)] bg-[#0c0c12] px-4 py-2 text-sm transition-colors hover:border-[rgba(255,255,255,0.25)] hover:bg-[#14141c]"
                 >
-                  <Icon size={16} className="text-gray-300" />
-                  <span className="text-[#e8b975]">{action.label}</span>
+                  <Icon size={14} className="text-[#e5e7eb]" />
+                  <span className="text-[13px] font-medium text-[#e0ac6f]">{action.label}</span>
                 </button>
               )
             })}
@@ -104,10 +107,10 @@ export default function Home() {
               return (
                 <button
                   key={action.label}
-                  className="flex items-center gap-2 rounded-full border border-white/10 bg-[#0f0f14] px-4 py-2 text-sm transition-colors hover:bg-[#1a1a22]"
+                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.1)] bg-[#0c0c12] px-4 py-2 text-sm transition-colors hover:border-[rgba(255,255,255,0.25)] hover:bg-[#14141c]"
                 >
-                  <Icon size={16} className="text-gray-300" />
-                  <span className="text-[#e8b975]">{action.label}</span>
+                  <Icon size={14} className="text-[#e5e7eb]" />
+                  <span className="text-[13px] font-medium text-[#e0ac6f]">{action.label}</span>
                 </button>
               )
             })}
