@@ -4,6 +4,8 @@ import {
   Maximize2,
   Sun,
   RefreshCw,
+  Paperclip,
+  ArrowUp,
 } from 'lucide-react'
 
 export default function Home() {
@@ -43,6 +45,20 @@ export default function Home() {
           <p className="mt-3 text-base text-gray-400">
             Build something amazing — just start typing below.
           </p>
+        </div>
+
+        <div className="mt-10 w-full max-w-[700px] rounded-2xl border border-white/10 bg-[#0f0f14] p-5 shadow-xl">
+          <div className="min-h-[60px]">
+            <p className="text-sm text-gray-500">Type your request...</p>
+          </div>
+          <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
+            <button className="rounded-md p-1.5 text-gray-500 transition-colors hover:text-gray-300">
+              <Paperclip size={18} />
+            </button>
+            <button className="flex items-center justify-center rounded-lg bg-[#1c1c24] p-2.5 text-white transition-colors hover:bg-[#2a2a35]">
+              <ArrowUp size={18} />
+            </button>
+          </div>
         </div>
       </div>
     </main>
