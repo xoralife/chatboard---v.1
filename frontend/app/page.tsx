@@ -32,7 +32,7 @@ const quickActionsRow2 = [
 
 export default function Home() {
   return (
-    <main className="relative flex min-h-screen flex-col items-center overflow-hidden bg-[#050508]">
+    <main className="relative flex min-h-screen flex-col items-center overflow-hidden bg-[#050508] selection:bg-purple-500/30">
       <div
         className="pointer-events-none absolute left-1/2 -translate-x-1/2"
         style={{
