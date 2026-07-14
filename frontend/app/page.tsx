@@ -6,7 +6,20 @@ import {
   RefreshCw,
   Paperclip,
   ArrowUp,
+  Code,
+  Rocket,
+  Layers,
+  Palette,
+  UserCircle,
 } from 'lucide-react'
+
+const quickActionsRow1 = [
+  { icon: Code, label: 'Generate Code' },
+  { icon: Rocket, label: 'Launch App' },
+  { icon: Layers, label: 'UI Components' },
+  { icon: Palette, label: 'Theme Ideas' },
+  { icon: UserCircle, label: 'User Dashboard' },
+]
 
 export default function Home() {
   return (
@@ -58,6 +71,23 @@ export default function Home() {
             <button className="flex items-center justify-center rounded-lg bg-[#1c1c24] p-2.5 text-white transition-colors hover:bg-[#2a2a35]">
               <ArrowUp size={18} />
             </button>
+          </div>
+        </div>
+
+        <div className="mt-8 flex flex-col items-center gap-3">
+          <div className="flex flex-wrap justify-center gap-3">
+            {quickActionsRow1.map((action) => {
+              const Icon = action.icon
+              return (
+                <button
+                  key={action.label}
+                  className="flex items-center gap-2 rounded-full border border-white/10 bg-[#0f0f14] px-4 py-2 text-sm transition-colors hover:bg-[#1a1a22]"
+                >
+                  <Icon size={16} className="text-gray-300" />
+                  <span className="text-[#e8b975]">{action.label}</span>
+                </button>
+              )
+            })}
           </div>
         </div>
       </div>
