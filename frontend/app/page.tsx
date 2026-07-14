@@ -49,13 +49,13 @@ export default function Home() {
 
       <div className="fixed left-6 top-6 z-20">
         <div className="flex items-center gap-1 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#0d0d12] p-1">
-          <button aria-label="Maximize" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors hover:bg-white/5">
+          <button aria-label="Maximize" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
             <Maximize size={16} />
           </button>
-          <button aria-label="Toggle theme" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors hover:bg-white/5">
+          <button aria-label="Toggle theme" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
             <Sun size={16} />
           </button>
-          <button aria-label="Refresh" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors hover:bg-white/5">
+          <button aria-label="Refresh" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
             <RotateCw size={16} />
           </button>
         </div>
