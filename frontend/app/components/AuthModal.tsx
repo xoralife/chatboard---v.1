@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
+import { useState, FormEvent, useEffect, useRef } from 'react'
 import { X } from 'lucide-react'
 import { useAuth } from '../lib/auth-context'
 
@@ -12,8 +12,9 @@ export default function AuthModal() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const handleSubmit = async (e: FormEvent) => {
+  useEffect(() => { inputRef.current?.focus() }, [mode])
     e.preventDefault()
     setError('')
     setBusy(true)
@@ -31,8 +32,8 @@ export default function AuthModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="relative w-[92%] max-w-[420px] rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[#0c0c12] p-6 shadow-[0_8px_40px_rgba(0,0,0,0.6)]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowAuthModal(false)}>
+      <div className="relative w-[92%] max-w-[420px] rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[#0c0c12] p-6 shadow-[0_8px_40px_rgba(0,0,0,0.6)]" onClick={(e) => e.stopPropagation()}>
         <button
           onClick={() => setShowAuthModal(false)}
           className="absolute right-4 top-4 text-gray-500 transition-colors hover:text-gray-300"
@@ -51,6 +52,7 @@ export default function AuthModal() {
 
         <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
           <input
+            ref={inputRef}
             type="text"
             placeholder="Username"
             value={username}

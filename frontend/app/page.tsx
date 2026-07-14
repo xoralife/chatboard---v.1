@@ -82,7 +82,9 @@ export default function Home() {
       {user && (
         <nav className="fixed right-4 top-4 z-20 sm:right-6 sm:top-6">
           <div className="flex items-center gap-2 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#0d0d12] px-3 py-2">
-            <MessageSquare size={14} className="text-gray-400" />
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#8b7cf6] text-[10px] font-bold text-white">
+              {user.username[0].toUpperCase()}
+            </span>
             <span className="text-sm text-gray-300">{user.username}</span>
             <button onClick={logout} aria-label="Logout" className="ml-1 rounded-md p-1 text-gray-500 transition-colors hover:text-red-400">
               <LogOut size={14} />
