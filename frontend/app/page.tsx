@@ -39,7 +39,6 @@ export default function Home() {
           bottom: '-40%',
           width: '140vw',
           height: '90vh',
-          opacity: 0.9,
           borderRadius: '50%',
           background:
             'radial-gradient(circle, #8b7cf6 0%, #6d4fe0 25%, #4c3aa8 45%, #1a1040 65%, transparent 75%)',
