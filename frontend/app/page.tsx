@@ -11,6 +11,9 @@ import {
   Layers,
   Palette,
   UserCircle,
+  Monitor,
+  FilePlus,
+  Image,
 } from 'lucide-react'
 
 const quickActionsRow1 = [
@@ -19,6 +22,12 @@ const quickActionsRow1 = [
   { icon: Layers, label: 'UI Components' },
   { icon: Palette, label: 'Theme Ideas' },
   { icon: UserCircle, label: 'User Dashboard' },
+]
+
+const quickActionsRow2 = [
+  { icon: Monitor, label: 'Landing Page' },
+  { icon: FilePlus, label: 'Upload Docs' },
+  { icon: Image, label: 'Image Assets' },
 ]
 
 export default function Home() {
@@ -77,6 +86,20 @@ export default function Home() {
         <div className="mt-8 flex flex-col items-center gap-3">
           <div className="flex flex-wrap justify-center gap-3">
             {quickActionsRow1.map((action) => {
+              const Icon = action.icon
+              return (
+                <button
+                  key={action.label}
+                  className="flex items-center gap-2 rounded-full border border-white/10 bg-[#0f0f14] px-4 py-2 text-sm transition-colors hover:bg-[#1a1a22]"
+                >
+                  <Icon size={16} className="text-gray-300" />
+                  <span className="text-[#e8b975]">{action.label}</span>
+                </button>
+              )
+            })}
+          </div>
+          <div className="flex flex-wrap justify-center gap-3">
+            {quickActionsRow2.map((action) => {
               const Icon = action.icon
               return (
                 <button
