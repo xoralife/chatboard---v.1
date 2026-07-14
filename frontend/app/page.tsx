@@ -76,10 +76,10 @@ export default function Home() {
             <p className="text-[15px] text-[#6b7280]">Type your request...</p>
           </div>
           <div className="mt-4 flex items-center justify-between">
-            <button className="text-[#9ca3af] transition-colors hover:text-gray-300">
+            <button aria-label="Attach file" className="text-[#9ca3af] transition-colors duration-150 hover:text-gray-300">
               <Paperclip size={18} />
             </button>
-            <button className="flex h-9 w-9 items-center justify-center rounded-lg border border-[rgba(255,255,255,0.1)] bg-[#1c1c24] text-white transition-colors hover:bg-[#2a2a35]">
+            <button aria-label="Send message" className="flex h-9 w-9 items-center justify-center rounded-lg border border-[rgba(255,255,255,0.1)] bg-[#1c1c24] text-white transition-colors duration-150 hover:bg-[#2a2a35]">
               <ArrowUp size={16} />
             </button>
           </div>
