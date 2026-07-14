@@ -33,32 +33,21 @@ const quickActionsRow2 = [
 export default function Home() {
   return (
     <main className="relative flex min-h-screen flex-col items-center overflow-hidden bg-[#050508] selection:bg-purple-500/30">
-      <div
-        className="pointer-events-none absolute left-1/2 -translate-x-1/2"
-        style={{
-          bottom: '-40%',
-          width: '140vw',
-          height: '90vh',
-          borderRadius: '50%',
-          background:
-            'radial-gradient(circle, #8b7cf6 0%, #6d4fe0 25%, #4c3aa8 45%, #1a1040 65%, transparent 75%)',
-          filter: 'blur(60px)',
-          opacity: 0.9,
-        }}
-      />
+      <div className="pointer-events-none absolute left-1/2 -translate-x-1/2" style={{ bottom: '-40%', width: '140vw', height: '90vh' }}>
+        <div
+          className="animate-glow-pulse h-full w-full"
+          style={{
+            borderRadius: '50%',
+            background:
+              'radial-gradient(circle, #8b7cf6 0%, #6d4fe0 25%, #4c3aa8 45%, #1a1040 65%, transparent 75%)',
+            filter: 'blur(60px)',
+            opacity: 0.9,
+          }}
+        />
+      </div>
 
       <nav className="fixed left-4 top-4 z-20 sm:left-6 sm:top-6">
-        <div className="flex items-center gap-1 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#0d0d12] p-1">
-          <button aria-label="Maximize" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
-            <Maximize size={16} />
-          </button>
-          <button aria-label="Toggle theme" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
-            <Sun size={16} />
-          </button>
-          <button aria-label="Refresh" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
-            <RotateCw size={16} />
-          </button>
-        </div>
+        
       </nav>
 
       <div className="relative z-10 flex w-full flex-col items-center justify-center px-4" style={{ minHeight: '100vh' }}>
