@@ -47,7 +47,7 @@ export default function Home() {
         }}
       />
 
-      <div className="fixed left-6 top-6 z-20">
+      <nav className="fixed left-4 top-4 z-20 sm:left-6 sm:top-6">
         <div className="flex items-center gap-1 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#0d0d12] p-1">
           <button aria-label="Maximize" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
             <Maximize size={16} />
@@ -59,7 +59,7 @@ export default function Home() {
             <RotateCw size={16} />
           </button>
         </div>
-      </div>
+      </nav>
 
       <div className="relative z-10 flex w-full flex-col items-center justify-center px-4" style={{ minHeight: '100vh' }}>
         <div className="flex flex-col items-center" style={{ marginTop: '-5vh' }}>
