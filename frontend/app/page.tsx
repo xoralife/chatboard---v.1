@@ -63,7 +63,7 @@ export default function Home() {
 
       <div className="relative z-10 flex w-full flex-col items-center justify-center px-4" style={{ minHeight: '100vh' }}>
         <div className="flex flex-col items-center" style={{ marginTop: '-5vh' }}>
-          <h1 className="text-center text-5xl font-extrabold tracking-tight text-white md:text-6xl">
+          <h1 className="text-center text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
             Xora AI
           </h1>
           <p className="mt-3 text-center text-base font-normal text-gray-400">
