@@ -92,7 +92,8 @@ export default function Home() {
               return (
                 <button
                   key={action.label}
-                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.1)] bg-[#0c0c12] px-4 py-2 text-sm transition-colors hover:border-[rgba(255,255,255,0.25)] hover:bg-[#14141c]"
+                  aria-label={action.label}
+                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.1)] bg-[#0c0c12] px-4 py-2 text-sm transition-all duration-150 hover:border-[rgba(255,255,255,0.25)] hover:bg-[#14141c] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
                 >
                   <Icon size={14} className="text-[#e5e7eb]" />
                   <span className="text-[13px] font-medium text-[#e0ac6f]">{action.label}</span>
@@ -106,7 +107,8 @@ export default function Home() {
               return (
                 <button
                   key={action.label}
-                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.1)] bg-[#0c0c12] px-4 py-2 text-sm transition-colors hover:border-[rgba(255,255,255,0.25)] hover:bg-[#14141c]"
+                  aria-label={action.label}
+                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.1)] bg-[#0c0c12] px-4 py-2 text-sm transition-all duration-150 hover:border-[rgba(255,255,255,0.25)] hover:bg-[#14141c] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
                 >
                   <Icon size={14} className="text-[#e5e7eb]" />
                   <span className="text-[13px] font-medium text-[#e0ac6f]">{action.label}</span>
