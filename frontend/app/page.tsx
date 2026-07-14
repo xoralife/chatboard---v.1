@@ -36,7 +36,7 @@ const quickActionsRow2 = [
 ]
 
 export default function Home() {
-  const { user, loading, logout, showAuthModal, setShowAuthModal } = useAuth()
+  const { user, logout, showAuthModal, setShowAuthModal } = useAuth()
   const [input, setInput] = useState('')
 
   const requireAuth = (action: () => void) => {
