@@ -14,7 +14,11 @@ import {
   Monitor,
   FilePlus,
   Image,
+  LogOut,
+  MessageSquare,
 } from 'lucide-react'
+import { useAuth } from './lib/auth-context'
+import AuthModal from './components/AuthModal'
 
 const quickActionsRow1 = [
   { icon: Code, label: 'Generate Code' },
@@ -31,6 +35,16 @@ const quickActionsRow2 = [
 ]
 
 export default function Home() {
+  const { user, loading, logout, showAuthModal, setShowAuthModal } = useAuth()
+
+  const requireAuth = (action: () => void) => {
+    if (!user) { setShowAuthModal(true); return }
+    action()
+  }
+
+  const handleSend = () => requireAuth(() => {})
+  const handlePillClick = (_label: string) => requireAuth(() => {})
+
   return (
     <main className="relative flex min-h-screen flex-col items-center overflow-hidden bg-[#050508] selection:bg-purple-500/30">
       <div className="pointer-events-none absolute left-1/2 -translate-x-1/2" style={{ bottom: '-40%', width: '140vw', height: '90vh' }}>
@@ -47,8 +61,30 @@ export default function Home() {
       </div>
 
       <nav className="fixed left-4 top-4 z-20 sm:left-6 sm:top-6">
-        
+        <div className="flex items-center gap-1 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#0d0d12] p-1">
+          <button aria-label="Maximize" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
+            <Maximize size={16} />
+          </button>
+          <button aria-label="Toggle theme" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
+            <Sun size={16} />
+          </button>
+          <button aria-label="Refresh" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
+            <RotateCw size={16} />
+          </button>
+        </div>
       </nav>
+
+      {user && (
+        <nav className="fixed right-4 top-4 z-20 sm:right-6 sm:top-6">
+          <div className="flex items-center gap-2 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[#0d0d12] px-3 py-2">
+            <MessageSquare size={14} className="text-gray-400" />
+            <span className="text-sm text-gray-300">{user.username}</span>
+            <button onClick={logout} aria-label="Logout" className="ml-1 rounded-md p-1 text-gray-500 transition-colors hover:text-red-400">
+              <LogOut size={14} />
+            </button>
+          </div>
+        </nav>
+      )}
 
       <div className="relative z-10 flex w-full flex-col items-center justify-center px-4" style={{ minHeight: '100vh' }}>
         <div className="flex flex-col items-center" style={{ marginTop: '-5vh' }}>
@@ -56,7 +92,7 @@ export default function Home() {
             Xora AI
           </h1>
           <p className="mt-3 text-center text-base font-normal text-gray-400">
-            Build something amazing — just start typing below.
+            {user ? `Hello, ${user.username} — just start typing below.` : 'Build something amazing — just start typing below.'}
           </p>
         </div>
 
@@ -68,13 +104,17 @@ export default function Home() {
             <button aria-label="Attach file" className="text-[#9ca3af] transition-colors duration-150 hover:text-gray-300">
               <Paperclip size={18} />
             </button>
-            <button aria-label="Send message" className="flex h-9 w-9 items-center justify-center rounded-lg border border-[rgba(255,255,255,0.1)] bg-[#1c1c24] text-white transition-colors duration-150 hover:bg-[#2a2a35]">
+            <button
+              aria-label="Send message"
+              onClick={handleSend}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-[rgba(255,255,255,0.1)] bg-[#1c1c24] text-white transition-colors duration-150 hover:bg-[#2a2a35]"
+            >
               <ArrowUp size={16} />
             </button>
           </div>
         </div>
 
-          <div className="mt-5 flex flex-col items-center gap-2 md:gap-3">
+        <div className="mt-5 flex flex-col items-center gap-2 md:gap-3">
           <div className="flex flex-wrap justify-center gap-3">
             {quickActionsRow1.map((action) => {
               const Icon = action.icon
@@ -82,6 +122,7 @@ export default function Home() {
                 <button
                   key={action.label}
                   aria-label={action.label}
+                  onClick={() => handlePillClick(action.label)}
                   className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.1)] bg-[#0c0c12] px-4 py-2 text-sm transition-all duration-150 hover:border-[rgba(255,255,255,0.25)] hover:bg-[#14141c] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
                 >
                   <Icon size={14} className="text-[#e5e7eb]" />
@@ -97,6 +138,7 @@ export default function Home() {
                 <button
                   key={action.label}
                   aria-label={action.label}
+                  onClick={() => handlePillClick(action.label)}
                   className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.1)] bg-[#0c0c12] px-4 py-2 text-sm transition-all duration-150 hover:border-[rgba(255,255,255,0.25)] hover:bg-[#14141c] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
                 >
                   <Icon size={14} className="text-[#e5e7eb]" />
@@ -107,6 +149,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {showAuthModal && <AuthModal />}
     </main>
   )
 }
