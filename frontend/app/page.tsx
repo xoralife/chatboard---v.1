@@ -71,7 +71,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="mx-auto mt-12 w-[92%] max-w-[700px] rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(12,12,18,0.85)] p-5 shadow-[0_8px_40px_rgba(0,0,0,0.5)] backdrop-blur-md">
+        <div className="mx-auto mt-10 w-[92%] max-w-[700px] rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(12,12,18,0.85)] p-5 shadow-[0_8px_40px_rgba(0,0,0,0.5)] backdrop-blur-md sm:mt-12">
           <div className="min-h-[3rem]">
             <p className="text-[15px] text-[#6b7280]">Type your request...</p>
           </div>
