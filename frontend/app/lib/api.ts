@@ -63,10 +63,6 @@ export const api = {
 
   deleteChat: (id: number) =>
     request(`/api/chats/${id}`, { method: 'DELETE' }),
-
-  getDashboard: () => request('/api/admin/dashboard'),
-
-  getUsers: () => request('/api/admin/users'),
 }
 
 export { getToken, setToken, removeToken }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import {
   Maximize,
   Sun,
@@ -16,10 +16,20 @@ import {
   FilePlus,
   Image,
   LogOut,
-  MessageSquare,
+  Bot,
+  User,
+  Loader2,
 } from 'lucide-react'
 import { useAuth } from './lib/auth-context'
+import { api } from './lib/api'
 import AuthModal from './components/AuthModal'
+
+interface Message {
+  id: number
+  role: 'user' | 'assistant'
+  content: string
+  created_at: string
+}
 
 const quickActionsRow1 = [
   { icon: Code, label: 'Generate Code' },
@@ -38,17 +48,74 @@ const quickActionsRow2 = [
 export default function Home() {
   const { user, logout, showAuthModal, setShowAuthModal } = useAuth()
   const [input, setInput] = useState('')
+  const [messages, setMessages] = useState<Message[]>([])
+  const [activeChatId, setActiveChatId] = useState<number | null>(null)
+  const [sending, setSending] = useState(false)
+  const bottomRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
   const requireAuth = (action: () => void) => {
     if (!user) { setShowAuthModal(true); return }
     action()
   }
 
-  const handleSend = () => {
-    if (!input.trim()) return
-    requireAuth(() => { setInput('') })
+  const sendMessage = async (content: string) => {
+    setSending(true)
+    try {
+      const userMsg: Message = {
+        id: Date.now(),
+        role: 'user',
+        content,
+        created_at: new Date().toISOString(),
+      }
+      setMessages((prev) => [...prev, userMsg])
+
+      let chatId = activeChatId
+      if (!chatId) {
+        const chat = await api.createChat(content.slice(0, 50))
+        chatId = chat.id
+        setActiveChatId(chatId)
+      }
+
+      const reply = await api.sendMessage(chatId!, content)
+      setMessages((prev) => [...prev, reply])
+    } catch (err: any) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          role: 'assistant',
+          content: `Error: ${err.message}`,
+          created_at: new Date().toISOString(),
+        },
+      ])
+    } finally {
+      setSending(false)
+    }
   }
-  const handlePillClick = (_label: string) => requireAuth(() => {})
+
+  const newChat = async () => {
+    if (!user) { setShowAuthModal(true); return }
+    const chat = await api.createChat('New Chat')
+    setActiveChatId(chat.id)
+    setMessages([])
+  }
+
+  const handleSend = () => {
+    if (!input.trim() || sending) return
+    requireAuth(() => {
+      sendMessage(input.trim())
+      setInput('')
+    })
+  }
+
+  const handlePillClick = (label: string) => {
+    if (!user) { setShowAuthModal(true); return }
+    sendMessage(label)
+  }
 
   return (
     <main className="relative flex min-h-screen flex-col items-center overflow-hidden bg-[#050508] selection:bg-purple-500/30">
@@ -73,7 +140,7 @@ export default function Home() {
           <button aria-label="Toggle theme" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
             <Sun size={16} />
           </button>
-          <button aria-label="Refresh" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
+          <button onClick={newChat} aria-label="New chat" className="flex h-9 w-9 items-center justify-center rounded-lg text-[#d1d5db] transition-colors duration-150 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30">
             <RotateCw size={16} />
           </button>
         </div>
@@ -93,17 +160,85 @@ export default function Home() {
         </nav>
       )}
 
-      <div className="relative z-10 flex w-full flex-col items-center justify-center px-4" style={{ minHeight: '100vh' }}>
-        <div className="flex flex-col items-center" style={{ marginTop: '-5vh' }}>
-          <h1 className="text-center text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
-            Xora AI
-          </h1>
-          <p className="mt-3 text-center text-base font-normal text-gray-400">
-            {user ? `Hello, ${user.username} — just start typing below.` : 'Build something amazing — just start typing below.'}
-          </p>
-        </div>
+      <div className="relative z-10 flex w-full flex-grow flex-col items-center px-4 pt-20" style={{ maxHeight: '100vh' }}>
+        {messages.length === 0 ? (
+          <div className="flex flex-grow flex-col items-center justify-center" style={{ marginTop: '-10vh' }}>
+            <div className="flex flex-col items-center">
+              <h1 className="text-center text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
+                Xora AI
+              </h1>
+              <p className="mt-3 text-center text-base font-normal text-gray-400">
+                {user ? `Hello, ${user.username} — just start typing below.` : 'Build something amazing — just start typing below.'}
+              </p>
+            </div>
 
-        <div className="mx-auto mt-10 w-[92%] max-w-[700px] rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(12,12,18,0.85)] p-5 shadow-[0_8px_40px_rgba(0,0,0,0.5)] backdrop-blur-md sm:mt-12">
+            <div className="mt-5 flex flex-col items-center gap-2 md:gap-3">
+              <div className="flex flex-wrap justify-center gap-3">
+                {quickActionsRow1.map((action) => {
+                  const Icon = action.icon
+                  return (
+                    <button
+                      key={action.label}
+                      aria-label={action.label}
+                      onClick={() => handlePillClick(action.label)}
+                      className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.1)] bg-[#0c0c12] px-4 py-2 text-sm transition-all duration-150 hover:border-[rgba(255,255,255,0.25)] hover:bg-[#14141c] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                    >
+                      <Icon size={14} className="text-[#e5e7eb]" />
+                      <span className="text-[13px] font-medium text-[#e0ac6f]">{action.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
+              <div className="flex flex-wrap justify-center gap-3">
+                {quickActionsRow2.map((action) => {
+                  const Icon = action.icon
+                  return (
+                    <button
+                      key={action.label}
+                      aria-label={action.label}
+                      onClick={() => handlePillClick(action.label)}
+                      className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.1)] bg-[#0c0c12] px-4 py-2 text-sm transition-all duration-150 hover:border-[rgba(255,255,255,0.25)] hover:bg-[#14141c] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                    >
+                      <Icon size={14} className="text-[#e5e7eb]" />
+                      <span className="text-[13px] font-medium text-[#e0ac6f]">{action.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="flex w-full max-w-[700px] flex-grow flex-col overflow-y-auto py-4">
+            <div className="flex flex-col gap-4">
+              {messages.map((msg) => (
+                <div key={msg.id} className={`flex gap-3 ${msg.role === 'assistant' ? '' : 'flex-row-reverse'}`}>
+                  <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${msg.role === 'assistant' ? 'bg-[#8b7cf6]/20' : 'bg-[#1c1c24]'}`}>
+                    {msg.role === 'assistant' ? <Bot size={14} className="text-[#8b7cf6]" /> : <User size={14} className="text-gray-400" />}
+                  </div>
+                  <div className={`max-w-[85%] rounded-2xl px-4 py-3 ${msg.role === 'assistant' ? 'bg-[#0c0c12] border border-[rgba(255,255,255,0.06)]' : 'bg-[#8b7cf6]/10 border border-[#8b7cf6]/20'}`}>
+                    <p className="text-sm leading-relaxed text-gray-200 whitespace-pre-wrap">{msg.content}</p>
+                  </div>
+                </div>
+              ))}
+              {sending && (
+                <div className="flex gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#8b7cf6]/20">
+                    <Bot size={14} className="text-[#8b7cf6]" />
+                  </div>
+                  <div className="flex items-center gap-2 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#0c0c12] px-4 py-3">
+                    <Loader2 size={14} className="animate-spin text-[#8b7cf6]" />
+                    <span className="text-sm text-gray-400">Thinking...</span>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div ref={bottomRef} />
+          </div>
+        )}
+      </div>
+
+      <div className="relative z-10 w-full px-4 pb-4">
+        <div className="mx-auto w-[92%] max-w-[700px] rounded-2xl border border-[rgba(255,255,255,0.08)] bg-[rgba(12,12,18,0.85)] p-5 shadow-[0_8px_40px_rgba(0,0,0,0.5)] backdrop-blur-md">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -119,45 +254,11 @@ export default function Home() {
             <button
               aria-label="Send message"
               onClick={handleSend}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-[rgba(255,255,255,0.1)] bg-[#1c1c24] text-white transition-colors duration-150 hover:bg-[#2a2a35]"
+              disabled={sending}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-[rgba(255,255,255,0.1)] bg-[#1c1c24] text-white transition-colors duration-150 hover:bg-[#2a2a35] disabled:opacity-40"
             >
               <ArrowUp size={16} />
             </button>
-          </div>
-        </div>
-
-        <div className="mt-5 flex flex-col items-center gap-2 md:gap-3">
-          <div className="flex flex-wrap justify-center gap-3">
-            {quickActionsRow1.map((action) => {
-              const Icon = action.icon
-              return (
-                <button
-                  key={action.label}
-                  aria-label={action.label}
-                  onClick={() => handlePillClick(action.label)}
-                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.1)] bg-[#0c0c12] px-4 py-2 text-sm transition-all duration-150 hover:border-[rgba(255,255,255,0.25)] hover:bg-[#14141c] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
-                >
-                  <Icon size={14} className="text-[#e5e7eb]" />
-                  <span className="text-[13px] font-medium text-[#e0ac6f]">{action.label}</span>
-                </button>
-              )
-            })}
-          </div>
-          <div className="flex flex-wrap justify-center gap-3">
-            {quickActionsRow2.map((action) => {
-              const Icon = action.icon
-              return (
-                <button
-                  key={action.label}
-                  aria-label={action.label}
-                  onClick={() => handlePillClick(action.label)}
-                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.1)] bg-[#0c0c12] px-4 py-2 text-sm transition-all duration-150 hover:border-[rgba(255,255,255,0.25)] hover:bg-[#14141c] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
-                >
-                  <Icon size={14} className="text-[#e5e7eb]" />
-                  <span className="text-[13px] font-medium text-[#e0ac6f]">{action.label}</span>
-                </button>
-              )
-            })}
           </div>
         </div>
       </div>
