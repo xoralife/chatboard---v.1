@@ -85,7 +85,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-5 flex flex-col items-center gap-3">
+          <div className="mt-5 flex flex-col items-center gap-2 md:gap-3">
           <div className="flex flex-wrap justify-center gap-3">
             {quickActionsRow1.map((action) => {
               const Icon = action.icon
