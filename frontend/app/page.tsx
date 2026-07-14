@@ -35,6 +35,15 @@ export default function Home() {
             </button>
           </div>
         </div>
+
+        <div className="mt-28 flex flex-col items-center">
+          <h1 className="text-5xl font-bold tracking-tight text-white">
+            Ruixen AI
+          </h1>
+          <p className="mt-3 text-base text-gray-400">
+            Build something amazing — just start typing below.
+          </p>
+        </div>
       </div>
     </main>
   )
