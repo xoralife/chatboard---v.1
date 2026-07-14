@@ -44,7 +44,10 @@ export default function Home() {
     action()
   }
 
-  const handleSend = () => requireAuth(() => {})
+  const handleSend = () => {
+    if (!input.trim()) return
+    requireAuth(() => { setInput('') })
+  }
   const handlePillClick = (_label: string) => requireAuth(() => {})
 
   return (
